@@ -1,5 +1,8 @@
 simple status bar only application, that prints the current input/output network usage in mbps, updated every 2 seconds
-looks like this http://i44.tinypic.com/28wl6p4.png (8mbps input, 3mbps output)
+
+looks like this:
+kbps: http://i42.tinypic.com/1zvbk8n.png (292 kbps input, 12mbps output)
+mbps: http://i40.tinypic.com/23sj1tv.png (14mbps input, 0mbps output)
 
 it uses ifmib(4), and very cool icon: http://www.iconarchive.com/show/halloween-icons-by-arrioch/skull-icon.html
 license:
