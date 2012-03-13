@@ -7,7 +7,7 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
-
+int aftershock = 1024*1024;
 struct _count {
     uint64_t input;
     uint64_t output;
@@ -32,11 +32,21 @@ void getio(int row, struct _count *c) {
 - (void) quit {
     exit(EXIT_SUCCESS);
 }
+- (void) kbps {
+    aftershock = 1024;
+}
+- (void) mbps {
+    aftershock = 1024 * 1024;
+}
 #define SLEEP 2
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     NSStatusBar *bar = [NSStatusBar systemStatusBar];
     NSMenu *m = [[NSMenu alloc] initWithTitle:@""];
-    [m addItem:[[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"in mbps, updated every %d seconds",SLEEP] action:nil keyEquivalent:@""]];
+    [m addItem:[[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"updated every %d seconds",SLEEP] action:nil keyEquivalent:@""]];
+    [m addItem:[NSMenuItem separatorItem]];
+    [m addItem:[[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"switch to kbps",SLEEP] action:@selector(kbps) keyEquivalent:@""]];
+    [m addItem:[[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"switch to mbps",SLEEP] action:@selector(mbps) keyEquivalent:@""]];
+    
     [m addItem:[[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(quit) keyEquivalent:@"q"]];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
@@ -54,8 +64,8 @@ void getio(int row, struct _count *c) {
             current.input = current.output = 0;
             for (; ifcount > 0; ifcount--)
                 getio(ifcount,&current);
-            [s setTitle:[NSString stringWithFormat:@"%lu|%lu",(current.input - prev.input)/SLEEP/1024/1024, (current.output - prev.output)/SLEEP/1024/1024]];
-            sleep(SLEEP);
+            [s setTitle:[NSString stringWithFormat:@"%lu|%lu %s",(current.input - prev.input)/SLEEP/aftershock, (current.output - prev.output)/SLEEP/aftershock,(aftershock > 1024 ? "m" : "k")]];
+            sleep(SLEEP); /* approx */
         }
     });
 }
