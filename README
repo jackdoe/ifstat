@@ -1,0 +1,4 @@
+simple status bar only application, that prints the current input/output network usage in mbps, updated every 2 seconds
+it uses ifmib(4), and very cool icon: http://www.iconarchive.com/show/halloween-icons-by-arrioch/skull-icon.html
+license:
+	do whatever you want with it
